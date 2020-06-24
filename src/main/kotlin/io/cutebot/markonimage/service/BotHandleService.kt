@@ -24,8 +24,8 @@ class BotHandleService(
         private val telegramService: TelegramService,
         private val photoMessageHandler: PhotoMessageHandler,
         private val botManageService: BotManageService,
-        private val marksMessageHandler: MarksMessageHandler,
-        private val markMessageHandler: MarkMessageHandler
+        marksMessageHandler: MarksMessageHandler,
+        markMessageHandler: MarkMessageHandler
 ): TgBotWebHookHandler, TgBotLongPollHandler {
     private val messagesMap: Map<String, MessageHandler> = mapOf(
             UNKNOWN_MESSAGE to UnknownMessageHandler(),
@@ -42,26 +42,25 @@ class BotHandleService(
 
     override fun handle(bot: BaseBot, update: TgUpdate) {
         if (update.message != null) {
-            val chatId = update.message.chat!!.id!!
+            val chatId = update.message.chat.id
             val usr = update.message.from!!
             when {
                 update.message.text != null -> {
-                    val msg = TgSendTextMessage(chatId)
-                    val (command, params) = extractCommand(update.message.text!!)
+                    val (command, params) = extractCommand(update.message.text)
                     val handler = messagesMap[command] ?: messagesMap[UNKNOWN_MESSAGE]!!
-                    msg.text = handler.handle(bot, params, chatId, usr)
-                    if (msg.text.isNotEmpty()) {
-                        telegramService.sendMessage(bot.token, msg)
+                    val text = handler.handle(bot, params, chatId, usr)
+                    if (text.isNotEmpty()) {
+                        telegramService.sendMessage(bot.token, TgSendTextMessage(chatId, text))
                     }
                 }
 
                 update.message.photo != null -> {
-                    photoMessageHandler.handlePhoto(bot, update.message.photo!!, chatId, usr)
+                    photoMessageHandler.handlePhoto(bot, update.message.photo, chatId, usr)
                     telegramService.sendChatAction(bot.token, chatId, "upload_photo")
                 }
 
                 update.message.document != null -> {
-                    photoMessageHandler.handleDocument(bot, update.message.document!!, chatId, usr)
+                    photoMessageHandler.handleDocument(bot, update.message.document, chatId, usr)
                     telegramService.sendChatAction(bot.token, chatId, "upload_document")
                 }
             }

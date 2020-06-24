@@ -45,15 +45,15 @@ class TelegramService(
 ) {
 
     fun getMe(token: String): TgUser {
-        return getMethod(token, "getMe", TgResponseUser::class.java).result
+        return getMethod(token, "getMe", TgResponseUser::class.java).result!!
     }
 
     fun getChat(token: String, id: Long): TgChat {
-        return getMethod(token, "getChat?chat_id=$id", TgResponseChat::class.java).result
+        return getMethod(token, "getChat?chat_id=$id", TgResponseChat::class.java).result!!
     }
 
     fun getFile(token: String, fileId: String): TgFile {
-        return getMethod(token, "getFile?file_id=$fileId", TgResponseFile::class.java).result
+        return getMethod(token, "getFile?file_id=$fileId", TgResponseFile::class.java).result!!
     }
 
     fun getUpdates(token: String, offset: Int, limit: Int, timeout: Int): TgResponseUpdate {
@@ -100,18 +100,18 @@ class TelegramService(
 
         return jacksonObjectMapper()
                 .readerFor(TgResponseMessage::class.java)
-                .readValue(r, TgResponseMessage::class.java).result
+                .readValue(r, TgResponseMessage::class.java).result!!
 
     }
 
 
     fun sendAnimation(token: String, animation: TgSendAnimation): TgMessage {
-        return postMethod(token, animation, "sendAnimation", TgResponseMessage::class.java).result
+        return postMethod(token, animation, "sendAnimation", TgResponseMessage::class.java).result!!
     }
 
     fun sendMessage(token: String, sendMessage: TgSendTextMessage): TgMessage {
         return try {
-            postMethod(token, sendMessage, "sendMessage", TgResponseMessage::class.java).result
+            postMethod(token, sendMessage, "sendMessage", TgResponseMessage::class.java).result!!
         } catch (e: HttpClientErrorException) {
             log.warn("error during sendMessage", e)
             if (e.rawStatusCode == 403) {
@@ -132,7 +132,7 @@ class TelegramService(
     fun updateMessage(botToken: String, tgSendMessage: TgSendTextMessage, updateMessageId: Long?): TgMessage {
         tgSendMessage.messageId = updateMessageId
         return try {
-            postMethod(botToken, tgSendMessage, "editMessageText", TgResponseMessage::class.java).result
+            postMethod(botToken, tgSendMessage, "editMessageText", TgResponseMessage::class.java).result!!
         } catch (e: HttpClientErrorException) {
             log.warn("error during editMessageText", e)
             if (e.rawStatusCode == 403) {

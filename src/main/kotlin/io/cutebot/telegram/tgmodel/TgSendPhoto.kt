@@ -11,4 +11,5 @@ class TgSendPhoto(
 
         @field:JsonProperty("caption")
         val caption: String? = null
+
 ) : TgSendMessage(chatId)

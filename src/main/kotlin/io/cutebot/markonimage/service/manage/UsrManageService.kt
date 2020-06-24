@@ -24,7 +24,7 @@ class UsrManageService(
         val newEntity = UsrEntity(
                 usrId = user.id,
                 userName = user.userName ?: "",
-                firstName = user.firstName ?: "",
+                firstName = user.firstName,
                 lastName = user.lastName ?: "",
                 createdOn = Calendar.getInstance(),
                 languageCode = user.languageCode ?: ""

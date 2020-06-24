@@ -63,7 +63,7 @@ class PhotoMessageHandler(
             bGr.dispose()
 
             // Return the buffered image
-            return bimage!!
+            return bimage
         }
     }
 }

@@ -5,20 +5,21 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TgUser (
-    val id: Long,
+        @field: JsonProperty
+        val id: Long,
 
-    @field: JsonProperty("is_bot")
-    val isBot: Boolean?,
+        @field: JsonProperty("is_bot")
+        val isBot: Boolean,
 
-    @field: JsonProperty("first_name")
-    val firstName: String?,
+        @field: JsonProperty("first_name")
+        val firstName: String,
 
-    @field: JsonProperty("last_name")
-    val lastName: String?,
+        @field: JsonProperty("last_name")
+        val lastName: String?,
 
-    @field: JsonProperty("username")
-    val userName: String?,
+        @field: JsonProperty("username")
+        val userName: String?,
 
-    @field: JsonProperty("language_code")
-    val languageCode: String?
+        @field: JsonProperty("language_code")
+        val languageCode: String?
 )

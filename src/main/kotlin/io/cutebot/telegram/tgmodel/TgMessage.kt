@@ -5,56 +5,56 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.cutebot.telegram.tgmodel.photo.TgPhotoSize
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class TgMessage {
-    @field: JsonProperty("message_id")
-    var messageId: Long? = null
+data class TgMessage (
+        @field: JsonProperty("message_id")
+        val messageId: Long,
 
-    @field: JsonProperty
-    var from: TgUser? = null
+        @field: JsonProperty
+        val from: TgUser?,
 
-    @field: JsonProperty
-    var chat: TgChatShort? = null
+        @field: JsonProperty
+        val chat: TgChat,
 
-    @field: JsonProperty
-    var date: Long? = null
+        @field: JsonProperty
+        val date: Long,
 
-    @field: JsonProperty("forward_from")
-    var forwardFrom: TgUser? = null
+        @field: JsonProperty("forward_from")
+        val forwardFrom: TgUser?,
 
-    @field: JsonProperty("forward_from_chat")
-    var forwardFromChat: TgChatShort? = null
+        @field: JsonProperty("forward_from_chat")
+        val forwardFromChat: TgChat?,
 
-    @field: JsonProperty("forward_from_message_id")
-    var forwardFromMessageId: Long? = null
+        @field: JsonProperty("forward_from_message_id")
+        val forwardFromMessageId: Long?,
 
-    @field: JsonProperty("forward_signature")
-    var forwardSignature: Long? = null
+        @field: JsonProperty("forward_signature")
+        val forwardSignature: Long?,
 
-    @field: JsonProperty("forward_date")
-    var forwardDate: Long? = null
+        @field: JsonProperty("forward_date")
+        val forwardDate: Long?,
 
-    @field: JsonProperty("reply_to_message")
-    var replyToMessage: TgMessage? = null
+        @field: JsonProperty("reply_to_message")
+        val replyToMessage: TgMessage?,
 
-    @field: JsonProperty("edit_date")
-    var editDate: Long? = null
+        @field: JsonProperty("edit_date")
+        val editDate: Long?,
 
-    @field: JsonProperty("media_group_id")
-    var mediaGroupId: String? = null
+        @field: JsonProperty("media_group_id")
+        val mediaGroupId: String?,
 
-    @field: JsonProperty("author_signature")
-    var authorSignature: String? = null
+        @field: JsonProperty("author_signature")
+        val authorSignature: String?,
 
-    @field: JsonProperty("text")
-    var text: String? = null
+        @field: JsonProperty("text")
+        val text: String?,
 
-    @field: JsonProperty("caption")
-    var caption: String? = null
+        @field: JsonProperty("caption")
+        val caption: String?,
 
-    @field: JsonProperty("photo")
-    var photo: List<TgPhotoSize>? = null
+        @field: JsonProperty("photo")
+        val photo: List<TgPhotoSize>?,
 
-    @field: JsonProperty("document")
-    var document: TgDocument? = null
+        @field: JsonProperty("document")
+        val document: TgDocument?
 
-}
+)

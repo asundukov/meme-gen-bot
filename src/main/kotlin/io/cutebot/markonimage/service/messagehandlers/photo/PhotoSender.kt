@@ -29,8 +29,7 @@ class PhotoSender(
     }
 
     override fun fail(reason: String) {
-        val message = TgSendTextMessage(chatId)
-        message.text = "Error $reason"
+        val message = TgSendTextMessage(chatId, "Error $reason")
         telegramService.sendMessage(bot.token, message)
     }
 

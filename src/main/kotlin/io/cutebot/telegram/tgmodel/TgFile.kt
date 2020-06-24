@@ -2,16 +2,16 @@ package io.cutebot.telegram.tgmodel
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-class TgFile(
-        @JsonProperty("file_id")
-        var fileId: String,
+data class TgFile(
+        @field: JsonProperty("file_id")
+        val fileId: String,
 
-        @JsonProperty("file_unique_id")
-        var fileUniqueId: String,
+        @field: JsonProperty("file_unique_id")
+        val fileUniqueId: String,
 
-        @JsonProperty("file_size")
-        var fileSize: Int? = null,
+        @field: JsonProperty("file_size")
+        val fileSize: Int? = null,
 
-        @JsonProperty("file_path")
-        var filePath: String
+        @field: JsonProperty("file_path")
+        val filePath: String
 )
