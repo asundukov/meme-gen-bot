@@ -30,9 +30,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
-import java.awt.image.BufferedImage
-import java.net.URL
-import javax.imageio.ImageIO
 
 
 @Service
@@ -184,12 +181,6 @@ class TelegramService(
             log.info("Error telegram api. GET {}. Response {}", url, e.responseBodyAsString)
             throw e
         }
-    }
-
-    fun downloadImage(token: String, fileId: String): BufferedImage {
-        val url = "https://api.telegram.org/file/bot$token/$fileId"
-        log.info("GET IMAGE {}", url)
-        return ImageIO.read(URL(url))
     }
 
     private fun <T> postMethod(token: String, request: Any, methodName: String, clazz: Class<T>): T {

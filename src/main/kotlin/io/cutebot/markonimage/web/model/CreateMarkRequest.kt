@@ -14,17 +14,24 @@ class CreateMarkRequest(
         val position: MarkPosition,
 
         @field: DecimalMin("0.01")
-        val sizePercent: BigDecimal,
+        val sizeValue: BigDecimal,
 
-        var image: MultipartFile?
+        var image: MultipartFile?,
+
+        val title: String,
+
+        val description: String
+
 ) {
     fun getCreateModel(): NewMark {
         image ?: error("image didn't located")
         return NewMark(
                 botId = botId,
                 position = position,
-                sizePercent = sizePercent,
-                image = image?.inputStream!!
+                sizeValue = sizeValue,
+                image = image?.inputStream!!,
+                title = title,
+                description = description
         )
     }
 }

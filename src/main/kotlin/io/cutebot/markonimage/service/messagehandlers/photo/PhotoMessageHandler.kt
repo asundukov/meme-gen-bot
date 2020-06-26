@@ -40,7 +40,7 @@ class PhotoMessageHandler(
                 originalImageUrl = originalFileUrl,
                 markImagePath = markFilePath,
                 markPosition = mark.position,
-                scaleValue = mark.sizePercent,
+                sizeValue = mark.sizeValue,
                 imageReceiver = PhotoSender(telegramService, bot, chatId, attachmentType)
         )
 

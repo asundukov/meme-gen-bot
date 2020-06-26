@@ -4,6 +4,7 @@ import io.cutebot.markonimage.domain.bot.BotRepository
 import io.cutebot.markonimage.domain.bot.model.BotEntity
 import io.cutebot.markonimage.domain.bot.model.ExistedBot
 import io.cutebot.markonimage.domain.bot.model.NewBot
+import io.cutebot.markonimage.domain.bot.model.UpdateBot
 import io.cutebot.markonimage.domain.mark.model.MarkEntity
 import io.cutebot.markonimage.service.exception.BotNotFoundException
 import io.cutebot.markonimage.service.exception.TokenAlreadyInUseException
@@ -29,7 +30,8 @@ class BotManageService(
                 adminUsrId = bot.adminUsrId,
                 totalImages = 0,
                 createdOn = Calendar.getInstance(),
-                defaultMark = null
+                defaultMark = null,
+                title = bot.title
         )
         repository.save(newEntity);
 
@@ -39,6 +41,15 @@ class BotManageService(
     @Transactional(readOnly = true)
     fun getById(id: Int): ExistedBot {
         return ExistedBot(getExistedById(id))
+    }
+
+    @Transactional
+    fun updateBot(botId: Int, bot: UpdateBot): ExistedBot {
+        val entity = getExistedById(botId)
+        entity.title = bot.title
+        bot.token?. let { entity.token = it }
+        repository.save(entity)
+        return ExistedBot(entity)
     }
 
     @Transactional(readOnly = true)
@@ -67,5 +78,10 @@ class BotManageService(
         bot.defaultMark = defaultMark
         repository.save(bot)
     }
+
+    fun getExistedByUserId(userId: Long): List<ExistedBot> {
+        return repository.findAllByAdminUsrId(userId).map { ExistedBot (it) }
+    }
+
 
 }

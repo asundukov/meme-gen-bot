@@ -16,7 +16,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(
-        path = ["/api/manage/mark"],
+        path = ["/api/manage/marks"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 class MarkManageResource(

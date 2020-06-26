@@ -17,14 +17,14 @@ class ImageGenerateExecutor {
             markImagePath: String,
             imageReceiver: ImageReceiver,
             markPosition: MarkPosition,
-            scaleValue: BigDecimal
+            sizeValue: BigDecimal
     ) {
         val task = ImageGenerateTask(
                 originalImageUrl = originalImageUrl,
                 markImagePath = markImagePath,
                 imageReceiver = imageReceiver,
                 markPosition = markPosition,
-                scaleValue = scaleValue
+                scaleValue = sizeValue
         )
 
         executor.execute(task)

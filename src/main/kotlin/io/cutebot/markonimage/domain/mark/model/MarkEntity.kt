@@ -4,6 +4,7 @@ package io.cutebot.markonimage.domain.mark.model
 import io.cutebot.markonimage.domain.bot.model.BotEntity
 import java.math.BigDecimal
 import java.util.Calendar
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.GeneratedValue
@@ -14,20 +15,26 @@ import javax.persistence.ManyToOne
 
 @Entity(name = "mark")
 class MarkEntity (
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    val markId: Int,
+        @Id
+        @GeneratedValue(strategy = IDENTITY)
+        @Column(updatable = false)
+        val markId: Int,
 
-    @ManyToOne
-    @JoinColumn(name = "bot_id")
-    val bot: BotEntity,
+        @ManyToOne
+        @JoinColumn(name = "bot_id", updatable = false)
+        val bot: BotEntity,
 
-    val position: Int,
+        var position: Int,
 
-    val sizePercent: BigDecimal,
+        var sizeValue: BigDecimal,
 
-    val totalImages: Int,
+        var totalImages: Int,
 
-    val createdOn: Calendar
+        @Column(updatable = false)
+        val createdOn: Calendar,
+
+        var title: String,
+
+        var description: String
 
 )

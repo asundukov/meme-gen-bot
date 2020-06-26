@@ -6,4 +6,6 @@ class GetBotResponse(bot: ExistedBot) {
     val botId = bot.id
     val totalImages = bot.totalImages
     val createdOn = bot.createdOn
+    val title = bot.title
+    val adminUsrId = bot.adminUsrId
 }

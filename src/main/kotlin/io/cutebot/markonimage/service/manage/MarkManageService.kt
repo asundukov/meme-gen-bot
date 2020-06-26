@@ -39,7 +39,9 @@ class MarkManageService(
                 totalImages = 0,
                 createdOn = Calendar.getInstance(),
                 position = MarkPosition.idByType(mark.position),
-                sizePercent = mark.sizePercent
+                sizeValue = mark.sizeValue,
+                title = mark.title,
+                description = mark.description
         )
         repository.save(newEntity)
 

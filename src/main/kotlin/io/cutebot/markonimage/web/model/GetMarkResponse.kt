@@ -7,5 +7,7 @@ class GetMarkResponse(mark: ExistedMark) {
     val botId = mark.botId
     val createdOn = mark.createdOn
     val totalImages = mark.totalImages
-    val sizePercent = mark.sizePercent
+    val sizeValue = mark.sizeValue
+    val title = mark.title
+    val description = mark.description
 }

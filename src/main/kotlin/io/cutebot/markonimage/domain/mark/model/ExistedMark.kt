@@ -2,11 +2,13 @@ package io.cutebot.markonimage.domain.mark.model
 
 import io.cutebot.imagegenerator.MarkPosition
 
-class ExistedMark(entity: MarkEntity): Mark {
+class ExistedMark(entity: MarkEntity) {
     val id = entity.markId
-    var totalImages = entity.totalImages
+    val totalImages = entity.totalImages
     val createdOn = entity.createdOn
-    override val botId = entity.bot.botId
-    override var position = MarkPosition.typeById(entity.position)
-    override var sizePercent = entity.sizePercent
+    val botId = entity.bot.botId
+    val position = MarkPosition.typeById(entity.position)
+    val sizeValue = entity.sizeValue
+    val title = entity.title
+    val description = entity.description
 }

@@ -5,8 +5,10 @@ import java.io.InputStream
 import java.math.BigDecimal
 
 class NewMark(
-        override val botId: Int,
-        override val position: MarkPosition,
-        override val sizePercent: BigDecimal,
-        val image: InputStream
-) : Mark
+        val botId: Int,
+        val position: MarkPosition,
+        val sizeValue: BigDecimal,
+        val image: InputStream,
+        val title: String,
+        val description: String
+)

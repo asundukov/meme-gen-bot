@@ -3,6 +3,7 @@ CREATE TABLE bot (
     admin_usr_id bigint not null,
     token varchar(1024) not null,
     total_images INT not null,
+    title varchar(32) not null,
     created_on timestamp not null default now()
 );
 
@@ -13,7 +14,9 @@ CREATE TABLE mark (
     mark_id serial not null primary key ,
     bot_id int not null references bot(bot_id),
     position smallint not null,
-    size_percent DECIMAL(5,2) not null,
+    size_value DECIMAL(5,2) not null,
+    title varchar(32) not null,
+    description varchar(512) not null,
     total_images INT not null,
     created_on timestamp not null default now()
 );
