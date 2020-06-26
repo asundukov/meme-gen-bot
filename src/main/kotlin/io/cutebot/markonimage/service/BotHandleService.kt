@@ -1,6 +1,7 @@
 package io.cutebot.markonimage.service
 
 import io.cutebot.markonimage.service.manage.BotManageService
+import io.cutebot.markonimage.service.messagehandlers.AboutMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.HelpMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.MarkMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.MarksMessageHandler
@@ -32,7 +33,8 @@ class BotHandleService(
             "/start" to StartMessageHandler(),
             "/help" to HelpMessageHandler(),
             "/marks" to marksMessageHandler,
-            "/mark" to markMessageHandler
+            "/mark" to markMessageHandler,
+            "/about" to AboutMessageHandler()
     )
 
     override fun handle(token: String, update: TgUpdate) {
