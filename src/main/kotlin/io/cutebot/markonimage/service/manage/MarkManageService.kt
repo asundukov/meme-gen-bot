@@ -26,7 +26,7 @@ class MarkManageService(
         private val botManageService: BotManageService,
         private val usrManageService: UsrManageService,
         private val usrBotSettingsService: UsrBotSettingsService,
-        @Value("\${image.dir}")
+        @Value("\${mark.dir}")
         private val dirPath: String
 ) {
     @Transactional

@@ -20,7 +20,8 @@ class ImageGenerateTask(
         private val markImagePath: String,
         private val imageReceiver: ImageReceiver,
         private val scaleValue: BigDecimal,
-        private val markPosition: MarkPosition
+        private val markPosition: MarkPosition,
+        private val imageDir: String
 ) : Runnable {
 
     override fun run() {
@@ -64,7 +65,7 @@ class ImageGenerateTask(
 
 
             val uuid = UUID.randomUUID().toString()
-            val finalPath = "D://$uuid.png"
+            val finalPath = "$imageDir/$uuid.png"
             ImageIO.write(original, "png", File(finalPath))
 
             imageReceiver.receive(finalPath)
