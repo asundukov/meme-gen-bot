@@ -29,6 +29,7 @@ class LongPollService(
 
     private fun startLongPolling(bots: List<ExistedBot>) {
         for (bot in bots) {
+            botHandleService.setCommands(BaseBot(bot.id, bot.token))
             startLongPoll(bot)
         }
     }

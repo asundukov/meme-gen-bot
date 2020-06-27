@@ -13,6 +13,8 @@ import io.cutebot.telegram.TelegramService
 import io.cutebot.telegram.handlers.BaseBot
 import io.cutebot.telegram.handlers.TgBotLongPollHandler
 import io.cutebot.telegram.handlers.TgBotWebHookHandler
+import io.cutebot.telegram.tgmodel.TgBotCommand
+import io.cutebot.telegram.tgmodel.TgBotCommands
 import io.cutebot.telegram.tgmodel.TgResponseUpdate
 import io.cutebot.telegram.tgmodel.TgSendTextMessage
 import io.cutebot.telegram.tgmodel.TgUpdate
@@ -26,12 +28,13 @@ class BotHandleService(
         private val photoMessageHandler: PhotoMessageHandler,
         private val botManageService: BotManageService,
         marksMessageHandler: MarksMessageHandler,
-        markMessageHandler: MarkMessageHandler
+        markMessageHandler: MarkMessageHandler,
+        helpMessageHandler: HelpMessageHandler
 ): TgBotWebHookHandler, TgBotLongPollHandler {
     private val messagesMap: Map<String, MessageHandler> = mapOf(
             UNKNOWN_MESSAGE to UnknownMessageHandler(),
             "/start" to StartMessageHandler(),
-            "/help" to HelpMessageHandler(),
+            "/help" to helpMessageHandler,
             "/marks" to marksMessageHandler,
             "/mark" to markMessageHandler,
             "/about" to AboutMessageHandler()
@@ -68,6 +71,17 @@ class BotHandleService(
             }
 
         }
+    }
+
+    fun setCommands(bot: BaseBot) {
+        val tgBotCommands = TgBotCommands(ArrayList())
+        messagesMap.forEach {
+            val description = it.value.getCommandDescription(bot)
+            if (description != null) {
+                tgBotCommands.commands.add(TgBotCommand(it.key, description))
+            }
+        }
+        telegramService.setCommands(bot.token, tgBotCommands)
     }
 
     private fun extractCommand(text: String): CommandWithParams {

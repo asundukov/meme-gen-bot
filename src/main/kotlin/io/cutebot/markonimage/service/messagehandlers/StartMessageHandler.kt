@@ -10,4 +10,7 @@ class StartMessageHandler : MessageHandler {
     override fun handle(bot: BaseBot, params: String, chatId: Long, user: TgUser): String {
         return defaultMessage
     }
+
+    override fun getCommandDescription(bot: BaseBot): String
+            = "Restart bot"
 }
