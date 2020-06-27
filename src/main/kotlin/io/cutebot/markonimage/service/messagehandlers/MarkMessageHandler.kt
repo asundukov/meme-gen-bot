@@ -26,4 +26,6 @@ class MarkMessageHandler(
 
         return ""
     }
+
+    override fun getCommandDescription(bot: BaseBot): String? = null
 }

@@ -28,4 +28,7 @@ class MarksMessageHandler(
 
         return ""
     }
+
+    override fun getCommandDescription(bot: BaseBot): String
+            = "Show all possible marks"
 }
