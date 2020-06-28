@@ -31,3 +31,14 @@ Apache 2.0
 
 ## API
 //TODO: place API examples
+
+## Create db schema example
+
+```
+CREATE ROLE markonimage PASSWORD 'markonimage' LOGIN;
+CREATE schema markonimage;
+GRANT ALL PRIVILEGES ON SCHEMA markonimage TO markonimage;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA markonimage TO markonimage;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA markonimage TO markonimage;
+ALTER ROLE markonimage SET search_path=markonimage;
+```
