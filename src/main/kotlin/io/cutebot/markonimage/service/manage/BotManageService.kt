@@ -34,7 +34,7 @@ class BotManageService(
                 title = bot.title,
                 username = username
         )
-        repository.save(newEntity);
+        save(newEntity);
 
         return ExistedBot(newEntity)
     }
@@ -49,7 +49,7 @@ class BotManageService(
         val entity = getExistedById(botId)
         entity.title = bot.title
         bot.token?. let { entity.token = it }
-        repository.save(entity)
+        save(entity)
         return ExistedBot(entity)
     }
 
@@ -77,11 +77,15 @@ class BotManageService(
 
     internal fun setDefaultMark(bot: BotEntity, defaultMark: MarkEntity) {
         bot.defaultMark = defaultMark
-        repository.save(bot)
+        save(bot)
     }
 
     fun getExistedByUserId(userId: Long): List<ExistedBot> {
         return repository.findAllByAdminUsrId(userId).map { ExistedBot (it) }
+    }
+
+    internal fun save(entity: BotEntity) {
+        repository.save(entity)
     }
 
 

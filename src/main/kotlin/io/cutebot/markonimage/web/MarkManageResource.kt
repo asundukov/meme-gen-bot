@@ -26,7 +26,7 @@ class MarkManageResource(
     fun create(
             @Valid @ModelAttribute mark: CreateMarkRequest
     ): GetMarkResponse {
-        val createdMark = service.save(mark.getCreateModel())
+        val createdMark = service.add(mark.getCreateModel())
         return GetMarkResponse(createdMark)
     }
 

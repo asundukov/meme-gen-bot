@@ -30,7 +30,7 @@ class MarkManageService(
         private val dirPath: String
 ) {
     @Transactional
-    fun save(mark: NewMark): ExistedMark {
+    fun add(mark: NewMark): ExistedMark {
         val botId = mark.botId
         val botEntity = botManageService.getExistedById(botId)
         val newEntity = MarkEntity(
@@ -44,7 +44,7 @@ class MarkManageService(
                 description = mark.description,
                 opacity = mark.opacity
         )
-        repository.save(newEntity)
+        save(newEntity)
 
         val id = newEntity.markId
         val fullDirPath = "$dirPath/$botId"
@@ -116,6 +116,10 @@ class MarkManageService(
         val path = "$fullDirPath/$id.png"
 
         return path
+    }
+
+    internal fun save(entity: MarkEntity) {
+        repository.save(entity)
     }
 
 }
