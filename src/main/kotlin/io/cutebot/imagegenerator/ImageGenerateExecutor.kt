@@ -21,7 +21,8 @@ class ImageGenerateExecutor(
             markImagePath: String,
             imageReceiver: ImageReceiver,
             markPosition: MarkPosition,
-            sizeValue: BigDecimal
+            sizeValue: BigDecimal,
+            opacity: BigDecimal
     ) {
         val task = ImageGenerateTask(
                 originalImageUrl = originalImageUrl,
@@ -29,7 +30,8 @@ class ImageGenerateExecutor(
                 imageReceiver = imageReceiver,
                 markPosition = markPosition,
                 scaleValue = sizeValue,
-                imageDir = imageDir
+                imageDir = imageDir,
+                opacity = opacity
         )
 
         executor.execute(task)

@@ -6,8 +6,8 @@ import java.math.BigDecimal
 import java.util.Calendar
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -35,6 +35,7 @@ class MarkEntity (
 
         var title: String,
 
-        var description: String
+        var description: String,
 
+        var opacity: BigDecimal
 )
