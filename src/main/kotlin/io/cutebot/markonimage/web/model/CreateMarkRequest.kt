@@ -20,7 +20,9 @@ class CreateMarkRequest(
 
         val title: String,
 
-        val description: String
+        val description: String,
+
+        val opacity: BigDecimal
 
 ) {
     fun getCreateModel(): NewMark {
@@ -31,7 +33,8 @@ class CreateMarkRequest(
                 sizeValue = sizeValue,
                 image = image?.inputStream!!,
                 title = title,
-                description = description
+                description = description,
+                opacity = opacity
         )
     }
 }

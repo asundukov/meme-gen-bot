@@ -10,5 +10,6 @@ class NewMark(
         val sizeValue: BigDecimal,
         val image: InputStream,
         val title: String,
-        val description: String
+        val description: String,
+        val opacity: BigDecimal
 )

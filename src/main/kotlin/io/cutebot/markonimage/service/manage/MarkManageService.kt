@@ -41,7 +41,8 @@ class MarkManageService(
                 position = MarkPosition.idByType(mark.position),
                 sizeValue = mark.sizeValue,
                 title = mark.title,
-                description = mark.description
+                description = mark.description,
+                opacity = mark.opacity
         )
         repository.save(newEntity)
 

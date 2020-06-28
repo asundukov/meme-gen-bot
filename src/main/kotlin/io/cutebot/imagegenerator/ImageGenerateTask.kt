@@ -21,7 +21,8 @@ class ImageGenerateTask(
         private val imageReceiver: ImageReceiver,
         private val scaleValue: BigDecimal,
         private val markPosition: MarkPosition,
-        private val imageDir: String
+        private val imageDir: String,
+        private val opacity: BigDecimal
 ) : Runnable {
 
     override fun run() {
@@ -46,7 +47,7 @@ class ImageGenerateTask(
             val scaledMark = PhotoMessageHandler.toBufferedImage(markImage.getScaledInstance(round(markW * scaleSize).toInt(), round(markH * scaleSize).toInt(), Image.SCALE_SMOOTH)!!)
 
             val g: Graphics2D = original.createGraphics()
-            g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER)
+            g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity.toFloat())
 
             val x = if (markPosition.isLeftAlign()) {
                 0

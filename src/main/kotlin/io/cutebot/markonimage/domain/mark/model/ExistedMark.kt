@@ -11,4 +11,5 @@ class ExistedMark(entity: MarkEntity) {
     val sizeValue = entity.sizeValue
     val title = entity.title
     val description = entity.description
+    val opacity = entity.opacity
 }
