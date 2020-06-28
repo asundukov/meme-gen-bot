@@ -1,6 +1,7 @@
 package io.cutebot.markonimage.service.messagehandlers.photo
 
 import io.cutebot.imagegenerator.ImageGenerateExecutor
+import io.cutebot.markonimage.service.StatService
 import io.cutebot.markonimage.service.manage.MarkManageService
 import io.cutebot.telegram.TelegramService
 import io.cutebot.telegram.handlers.BaseBot
@@ -17,6 +18,7 @@ import java.awt.image.BufferedImage
 class PhotoMessageHandler(
         private val telegramService: TelegramService,
         private val markManageService: MarkManageService,
+        private val statService: StatService,
         private val imageGenerateExecutor: ImageGenerateExecutor
 ) {
 
@@ -41,7 +43,13 @@ class PhotoMessageHandler(
                 markImagePath = markFilePath,
                 markPosition = mark.position,
                 sizeValue = mark.sizeValue,
-                imageReceiver = PhotoSender(telegramService, bot, chatId, attachmentType),
+                imageReceiver = PhotoSender(
+                        telegramService = telegramService,
+                        bot = bot,
+                        chatId = chatId,
+                        attachmentType = attachmentType,
+                        incrementFunc = { statService.addMarkImageGenerate(mark.id) }
+                ),
                 opacity = mark.opacity
         )
 

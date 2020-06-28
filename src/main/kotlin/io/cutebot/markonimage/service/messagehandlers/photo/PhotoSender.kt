@@ -12,11 +12,14 @@ class PhotoSender(
         private val telegramService: TelegramService,
         private val bot: BaseBot,
         private val chatId: Long,
-        private val attachmentType: AttachmentType
+        private val attachmentType: AttachmentType,
+        private val incrementFunc: () -> Unit
 ) : ImageReceiver {
 
     override fun receive(filePath: String) {
         val f = File(filePath)
+
+        incrementFunc.invoke()
 
         if (attachmentType == AttachmentType.PHOTO) {
             val tgSendPhoto = TgSendPhoto(chatId, f)
