@@ -19,7 +19,7 @@ class BotManageService(
 ) {
 
     @Transactional
-    fun save(bot: NewBot): ExistedBot {
+    fun save(bot: NewBot, username: String): ExistedBot {
         val existed = repository.findByToken(bot.token)
         if (existed != null) {
             throw TokenAlreadyInUseException()
@@ -31,7 +31,8 @@ class BotManageService(
                 totalImages = 0,
                 createdOn = Calendar.getInstance(),
                 defaultMark = null,
-                title = bot.title
+                title = bot.title,
+                username = username
         )
         repository.save(newEntity);
 

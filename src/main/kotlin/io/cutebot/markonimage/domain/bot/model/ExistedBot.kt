@@ -5,6 +5,7 @@ data class ExistedBot(val entity: BotEntity) {
     val token = entity.token
     val adminUsrId = entity.adminUsrId
     val title = entity.title
+    val username = entity.username
     val createdOn = entity.createdOn
     val totalImages = entity.totalImages
 }

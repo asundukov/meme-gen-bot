@@ -8,4 +8,5 @@ class GetBotResponse(bot: ExistedBot) {
     val createdOn = bot.createdOn
     val title = bot.title
     val adminUsrId = bot.adminUsrId
+    val username = bot.username
 }
