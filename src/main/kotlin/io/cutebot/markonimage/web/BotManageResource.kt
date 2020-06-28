@@ -6,6 +6,7 @@ import io.cutebot.markonimage.service.LongPollService
 import io.cutebot.markonimage.web.model.CreateBotRequest
 import io.cutebot.markonimage.web.model.GetBotResponse
 import io.cutebot.markonimage.web.model.UpdateBotRequest
+import io.cutebot.telegram.TelegramService
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,14 +24,17 @@ import javax.validation.Valid
 )
 class BotManageResource(
         private val service: BotManageService,
-        private val longPollService: LongPollService
+        private val longPollService: LongPollService,
+        private val telegramService: TelegramService
 ) {
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     fun create(
             @Valid @RequestBody bot: CreateBotRequest
     ): GetBotResponse {
-        val createdBot = service.save(bot.getCreateModel())
+        val newBot = bot.getCreateModel()
+        val tgUser = telegramService.getMe(newBot.token)
+        val createdBot = service.save(newBot, tgUser.userName!!)
         longPollService.startLongPoll(createdBot)
         return GetBotResponse(createdBot)
     }

@@ -26,6 +26,8 @@ data class BotEntity(
 
         var title: String,
 
+        var username: String,
+
         @ManyToOne
         @JoinColumn(name = "default_mark_id")
         var defaultMark: MarkEntity?,
