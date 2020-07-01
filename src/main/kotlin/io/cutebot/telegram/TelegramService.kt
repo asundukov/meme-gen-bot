@@ -14,11 +14,13 @@ import io.cutebot.telegram.tgmodel.TgSendDocument
 import io.cutebot.telegram.tgmodel.TgSendPhoto
 import io.cutebot.telegram.tgmodel.TgSendTextMessage
 import io.cutebot.telegram.tgmodel.TgUser
+import io.cutebot.telegram.tgmodel.TgUserProfilePhotos
 import io.cutebot.telegram.tgmodel.inline.TgAnswerInlineQuery
 import io.cutebot.telegram.tgmodel.response.TgResponseChat
 import io.cutebot.telegram.tgmodel.response.TgResponseFile
 import io.cutebot.telegram.tgmodel.response.TgResponseMessage
 import io.cutebot.telegram.tgmodel.response.TgResponseUser
+import io.cutebot.telegram.tgmodel.response.TgResponseUserProfilePhotos
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType.TEXT_PLAIN
@@ -130,6 +132,16 @@ class TelegramService(
         val chatAction = TgChatAction(chatId, action)
         postMethod(token, chatAction, "sendChatAction", String::class.java)
     }
+
+    fun getUserProfilePhotos(token: String, userId: Long): TgUserProfilePhotos {
+        val method = "getUserProfilePhotos?user_id=$userId"
+        return try {
+            getMethod(token, method, TgResponseUserProfilePhotos::class.java).result!!
+        } catch (e: HttpClientErrorException) {
+            throw RuntimeException(e)
+        }
+    }
+
 
     fun updateMessage(botToken: String, tgSendMessage: TgSendTextMessage, updateMessageId: Long?): TgMessage {
         tgSendMessage.messageId = updateMessageId

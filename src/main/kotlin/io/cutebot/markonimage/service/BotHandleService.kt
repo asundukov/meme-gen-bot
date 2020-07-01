@@ -3,6 +3,7 @@ package io.cutebot.markonimage.service
 import io.cutebot.markonimage.service.manage.BotManageService
 import io.cutebot.markonimage.service.messagehandlers.AboutMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.HelpMessageHandler
+import io.cutebot.markonimage.service.messagehandlers.MakeAvatarMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.MarkMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.MarksMessageHandler
 import io.cutebot.markonimage.service.messagehandlers.MessageHandler
@@ -29,7 +30,8 @@ class BotHandleService(
         private val botManageService: BotManageService,
         marksMessageHandler: MarksMessageHandler,
         markMessageHandler: MarkMessageHandler,
-        helpMessageHandler: HelpMessageHandler
+        helpMessageHandler: HelpMessageHandler,
+        makeAvatarMessageHandler: MakeAvatarMessageHandler
 ): TgBotWebHookHandler, TgBotLongPollHandler {
     private val messagesMap: Map<String, MessageHandler> = mapOf(
             UNKNOWN_MESSAGE to UnknownMessageHandler(),
@@ -37,7 +39,8 @@ class BotHandleService(
             "/help" to helpMessageHandler,
             "/marks" to marksMessageHandler,
             "/mark" to markMessageHandler,
-            "/about" to AboutMessageHandler()
+            "/about" to AboutMessageHandler(),
+            "/makeavatar" to makeAvatarMessageHandler
     )
 
     override fun handle(token: String, update: TgUpdate) {
