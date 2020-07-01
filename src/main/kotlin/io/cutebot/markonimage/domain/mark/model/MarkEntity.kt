@@ -37,5 +37,8 @@ class MarkEntity (
 
         var description: String,
 
-        var opacity: BigDecimal
+        var opacity: BigDecimal,
+
+        @Column(name="is_active")
+        var active: Boolean
 )
