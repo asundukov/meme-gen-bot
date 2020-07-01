@@ -41,4 +41,5 @@ class UsrBotSettingsService(
         entity.selectedMark = markEntity
         repository.save(entity)
     }
+
 }

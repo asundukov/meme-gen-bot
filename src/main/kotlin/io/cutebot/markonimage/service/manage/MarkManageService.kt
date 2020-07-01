@@ -4,7 +4,9 @@ import io.cutebot.markonimage.domain.mark.MarkRepository
 import io.cutebot.markonimage.domain.mark.model.ExistedMark
 import io.cutebot.markonimage.domain.mark.model.MarkEntity
 import io.cutebot.imagegenerator.MarkPosition
+import io.cutebot.markonimage.domain.bot.model.BotEntity
 import io.cutebot.markonimage.domain.mark.model.NewMark
+import io.cutebot.markonimage.domain.mark.model.UpdateMark
 import io.cutebot.markonimage.service.UsrBotSettingsService
 import io.cutebot.markonimage.service.exception.MarkNotFoundException
 import io.cutebot.telegram.tgmodel.TgUser
@@ -42,7 +44,8 @@ class MarkManageService(
                 sizeValue = mark.sizeValue,
                 title = mark.title,
                 description = mark.description,
-                opacity = mark.opacity
+                opacity = mark.opacity,
+                active = true
         )
         save(newEntity)
 
@@ -72,15 +75,35 @@ class MarkManageService(
         return ExistedMark(getExistedEntityById(id))
     }
 
+    @Transactional
+    fun deleteById(markId: Int) {
+        val mark = getExistedEntityById(markId)
+        mark.active = false
+
+        val defaultMark = mark.bot.defaultMark
+        if (defaultMark != null && defaultMark.markId == mark.markId) {
+            val marks = getAllActive(mark.bot)
+            if (marks.isNotEmpty()) {
+                mark.bot.defaultMark = marks[0]
+                botManageService.save(mark.bot)
+            }
+        }
+        repository.save(mark)
+    }
+
+
     @Transactional(readOnly = true)
-    fun getAll(botId: Int): List<ExistedMark> {
+    fun getAllActive(botId: Int): List<ExistedMark> {
         val botEntity = botManageService.getExistedById(botId)
-        return repository.findAllByBot(botEntity).map { item -> ExistedMark(item) }
+        return getAllActive(botEntity).map { item -> ExistedMark(item) }
     }
 
     @Transactional
     fun selectMark(markId: Int, botId: Int, user: TgUser): ExistedMark {
         val markEntity = repository.findByIdOrNull(markId) ?: throw MarkNotFoundException(markId)
+        if (!markEntity.active) {
+            throw MarkNotFoundException(markId)
+        }
         val botEntity = botManageService.getExistedById(botId)
 
         if (markEntity.bot.botId != botEntity.botId) {
@@ -94,11 +117,26 @@ class MarkManageService(
     }
 
     @Transactional
+    fun update(markId: Int, updateMark: UpdateMark) {
+        val mark = getExistedEntityById(markId)
+        mark.title = updateMark.title
+        mark.description = updateMark.description
+        mark.opacity = updateMark.opacity
+        mark.position = MarkPosition.idByType(updateMark.position)
+        mark.sizeValue = updateMark.sizeValue
+        repository.save(mark)
+    }
+
+    @Transactional
     fun getSelectedMark(botId: Int, user: TgUser): ExistedMark {
         val botEntity = botManageService.getExistedById(botId)
         val usrEntity = usrManageService.getOrCreateById(user)
 
         return ExistedMark(usrBotSettingsService.getSelectedMark(botEntity, usrEntity))
+    }
+
+    internal fun getAllActive(botEntity: BotEntity): List<MarkEntity> {
+        return repository.findAllByActiveIsTrueAndBot(botEntity)
     }
 
     internal fun getExistedEntityById(id: Int): MarkEntity {

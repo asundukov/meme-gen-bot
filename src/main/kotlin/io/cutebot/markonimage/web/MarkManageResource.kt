@@ -3,7 +3,9 @@ package io.cutebot.markonimage.web
 import io.cutebot.markonimage.service.manage.MarkManageService
 import io.cutebot.markonimage.web.model.CreateMarkRequest
 import io.cutebot.markonimage.web.model.GetMarkResponse
+import io.cutebot.markonimage.web.model.UpdateMarkRequest
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -37,11 +39,26 @@ class MarkManageResource(
         return GetMarkResponse(service.getById(markId))
     }
 
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], value = ["/{mark_id}"])
+    fun update(
+            @PathVariable("mark_id") markId: Int,
+            @Valid @ModelAttribute mark: UpdateMarkRequest
+    ) {
+        return service.update(markId, mark.getUpdateModel())
+    }
+
+    @DeleteMapping("/{mark_id}")
+    fun delete(
+            @PathVariable("mark_id") markId: Int
+    ) {
+        return service.deleteById(markId)
+    }
+
     @GetMapping("/findByBot")
     fun getByBot(
             @RequestParam("bot_id") botId: Int
     ): List<GetMarkResponse> {
-        return service.getAll(botId).map { GetMarkResponse(it) }
+        return service.getAllActive(botId).map { GetMarkResponse(it) }
     }
 
 }

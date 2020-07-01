@@ -15,7 +15,7 @@ class MarksMessageHandler(
 ): MessageHandler {
 
     override fun handle(bot: BaseBot, params: String, chatId: Long, user: TgUser): String {
-        val marks = markManageService.getAll(bot.id)
+        val marks = markManageService.getAllActive(bot.id)
 
         for (mark in marks) {
             val photo = TgSendPhoto(
