@@ -2,7 +2,6 @@ package io.cutebot.imagegenerator
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -19,19 +18,13 @@ class ImageGenerateExecutor(
     fun execute(
             originalImageUrl: String,
             markImagePath: String,
-            imageReceiver: ImageReceiver,
-            markPosition: MarkPosition,
-            sizeValue: BigDecimal,
-            opacity: BigDecimal
+            imageReceiver: ImageReceiver
     ) {
         val task = ImageGenerateTask(
                 originalImageUrl = originalImageUrl,
                 markImagePath = markImagePath,
                 imageReceiver = imageReceiver,
-                markPosition = markPosition,
-                scaleValue = sizeValue,
-                imageDir = imageDir,
-                opacity = opacity
+                imageDir = imageDir
         )
 
         executor.execute(task)

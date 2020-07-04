@@ -1,6 +1,6 @@
 package io.cutebot.imagegenerator
 
-import io.cutebot.markonimage.service.messagehandlers.photo.PhotoMessageHandler
+import io.cutebot.memegen.service.messagehandlers.photo.PhotoMessageHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.awt.AlphaComposite
@@ -8,7 +8,6 @@ import java.awt.Graphics2D
 import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
-import java.math.BigDecimal
 import java.net.URL
 import java.util.UUID
 import javax.imageio.ImageIO
@@ -19,10 +18,7 @@ class ImageGenerateTask(
         private val originalImageUrl: String,
         private val markImagePath: String,
         private val imageReceiver: ImageReceiver,
-        private val scaleValue: BigDecimal,
-        private val markPosition: MarkPosition,
-        private val imageDir: String,
-        private val opacity: BigDecimal
+        private val imageDir: String
 ) : Runnable {
 
     override fun run() {
@@ -42,24 +38,16 @@ class ImageGenerateTask(
 
             val minRatio = min(hRatio, wRatio)
 
-            val scaleSize = scaleValue.toDouble() * minRatio
+            val scaleSize = 1 * minRatio
 
             val scaledMark = PhotoMessageHandler.toBufferedImage(markImage.getScaledInstance(round(markW * scaleSize).toInt(), round(markH * scaleSize).toInt(), Image.SCALE_SMOOTH)!!)
 
             val g: Graphics2D = original.createGraphics()
-            g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity.toFloat())
+            g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER)
 
-            val x = if (markPosition.isLeftAlign()) {
-                0
-            } else {
-                originalW - scaledMark.width
-            }
+            val x = 0
 
-            val y = if (markPosition.isTopAlign()) {
-                0
-            } else {
-                originalH - scaledMark.height
-            }
+            val y = 0
 
             g.drawImage(scaledMark, x, y, null)
             g.dispose()

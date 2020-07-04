@@ -1,7 +1,7 @@
 package io.cutebot
 
-import io.cutebot.markonimage.service.LogFileInterceptor
-import io.cutebot.markonimage.service.LogInterceptor
+import io.cutebot.memegen.service.LogFileInterceptor
+import io.cutebot.memegen.service.LogInterceptor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.BufferingClientHttpRequestFactory

@@ -1,6 +1,6 @@
 package io.cutebot
 
-import io.cutebot.markonimage.web.TokenInterceptor
+import io.cutebot.memegen.web.TokenInterceptor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
