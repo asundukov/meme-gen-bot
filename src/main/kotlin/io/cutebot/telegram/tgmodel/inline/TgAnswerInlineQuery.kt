@@ -7,16 +7,16 @@ import java.util.ArrayList
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class TgAnswerInlineQuery (
         @field: JsonProperty("inline_query_id")
-        val inlineQueryId: String? = null,
+        val inlineQueryId: String,
 
         @field: JsonProperty
-        val results: List<TgInlineQueryResult> = ArrayList(),
+        val results: ArrayList<TgInlineQueryResult> = ArrayList(),
 
         @field: JsonProperty("cache_time")
-        val cacheTime: Int = 15,
+        val cacheTime: Int = 10,
 
         @field: JsonProperty("is_personal")
-        val isPersonal: Boolean = true,
+        val isPersonal: Boolean? = null,
 
         @JsonProperty("next_offset")
         val nextOffset: String = "",

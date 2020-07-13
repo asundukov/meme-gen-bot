@@ -5,6 +5,6 @@ class ExistedMeme(entity: MemeEntity) {
     val totalImages = entity.totalGenerated
     val createdOn = entity.createdOn
     val botId = entity.bot.botId
-    val title = entity.title
-    val description = entity.description
+    val alias = entity.alias
+    val areas = entity.areas.sortedBy { it.num } .map { ExistedArea(it) }
 }

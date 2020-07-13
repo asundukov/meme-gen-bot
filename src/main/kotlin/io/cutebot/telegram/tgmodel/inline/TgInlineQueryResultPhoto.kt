@@ -5,26 +5,29 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.cutebot.telegram.tgmodel.keyboard.TgInlineKeyboardMarkup
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class TgInlineQueryResultArticle(
+class TgInlineQueryResultPhoto (
         @field: JsonProperty
         val id: String,
 
-        @field: JsonProperty
-        val title: String,
+        @field: JsonProperty("photo_url")
+        val photoUrl: String,
 
-        @field: JsonProperty("input_message_content")
-        val inputMessageContent: TgInputMessageContent,
+        @field: JsonProperty("thumb_url")
+        val thumbUrl: String,
+
+        @field: JsonProperty
+        val title: String = "",
 
         @field: JsonProperty
         val description: String? = null,
 
+        @field: JsonProperty("input_message_content")
+        val inputMessageContent: TgInputMessageContent? = null,
 
         @field: JsonProperty("reply_markup")
         val replyKeyboardMarkup: TgInlineKeyboardMarkup? = null
 
 ) : TgInlineQueryResult() {
-
         @field: JsonProperty
-        val type: String = "article"
-
+        val type: String = "photo"
 }

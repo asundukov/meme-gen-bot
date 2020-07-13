@@ -2,7 +2,9 @@ package io.cutebot.memegen.domain.meme.model
 
 
 import io.cutebot.memegen.domain.bot.model.BotEntity
+import org.hibernate.annotations.CascadeType
 import java.util.Calendar
+import javax.persistence.CascadeType.PERSIST
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 
 @Entity(name = "meme")
@@ -23,14 +26,15 @@ class MemeEntity (
         @JoinColumn(name = "bot_id", updatable = false)
         val bot: BotEntity,
 
+        @OneToMany(mappedBy = "meme", cascade = [PERSIST])
+        val areas: List<MemeTextAreaEntity>,
+
         var totalGenerated: Int,
 
         @Column(updatable = false)
         val createdOn: Calendar,
 
-        var title: String,
-
-        var description: String,
+        var alias: String,
 
         @Column(name="is_active")
         var active: Boolean

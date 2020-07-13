@@ -6,6 +6,7 @@ import io.cutebot.memegen.service.messagehandlers.HelpMessageHandler
 import io.cutebot.memegen.service.messagehandlers.MessageHandler
 import io.cutebot.memegen.service.messagehandlers.StartMessageHandler
 import io.cutebot.memegen.service.messagehandlers.UnknownMessageHandler
+import io.cutebot.memegen.service.messagehandlers.inline.InlineHandler
 import io.cutebot.telegram.TelegramService
 import io.cutebot.telegram.handlers.BaseBot
 import io.cutebot.telegram.handlers.TgBotLongPollHandler
@@ -23,7 +24,8 @@ import kotlin.math.min
 class BotHandleService(
         private val telegramService: TelegramService,
         private val botManageService: BotManageService,
-        helpMessageHandler: HelpMessageHandler
+        helpMessageHandler: HelpMessageHandler,
+        private val inlineHandler: InlineHandler
 ): TgBotWebHookHandler, TgBotLongPollHandler {
     private val messagesMap: Map<String, MessageHandler> = mapOf(
             UNKNOWN_MESSAGE to UnknownMessageHandler(),
@@ -51,8 +53,11 @@ class BotHandleService(
                     }
                 }
             }
-
         }
+        if (update.inlineQuery != null) {
+            inlineHandler.handle(bot, update.inlineQuery.query, update.inlineQuery.from, update.inlineQuery.id)
+        }
+
     }
 
     fun setCommands(bot: BaseBot) {

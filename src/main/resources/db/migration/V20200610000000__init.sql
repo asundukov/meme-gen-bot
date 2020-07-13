@@ -14,12 +14,13 @@ CREATE index bot_admin_usr_id_idx  ON bot(admin_usr_id);
 CREATE TABLE meme (
     meme_id serial not null primary key ,
     bot_id int not null references bot(bot_id),
-    title varchar(32) not null,
-    description varchar(512) not null,
+    alias varchar(32) not null,
     total_generated INT not null,
     is_active BOOLEAN not null,
     created_on timestamp not null default now()
 );
+
+CREATE UNIQUE INDEX mem_bot_id_alias_acive_uniq ON meme(bot_id, alias) where is_active=true;
 
 CREATE TABLE meme_text_area (
     meme_text_area_id serial not null primary key ,
@@ -27,7 +28,7 @@ CREATE TABLE meme_text_area (
     num int not null,
     top_pos decimal(7,4) not null,
     bottom_pos decimal(7,4) not null,
-    let_pos decimal(7,4) not null,
+    left_pos decimal(7,4) not null,
     right_pos decimal(7,4) not null
 );
 

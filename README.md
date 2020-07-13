@@ -34,5 +34,5 @@ CREATE schema memegen;
 GRANT ALL PRIVILEGES ON SCHEMA memegen TO memegen;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA memegen TO memegen;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA memegen TO memegen;
-ALTER ROLE memgen SET search_path=memegen;
+ALTER ROLE memegen SET search_path=memegen;
 ```

@@ -5,6 +5,6 @@ import java.io.InputStream
 class NewMeme(
         val botId: Int,
         val image: InputStream,
-        val title: String,
-        val description: String
+        val alias: String,
+        val textAreas: List<MemeTextArea>
 )

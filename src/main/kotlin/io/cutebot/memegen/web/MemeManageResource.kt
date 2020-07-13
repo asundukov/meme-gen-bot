@@ -34,17 +34,17 @@ class MemeManageResource(
 
     @GetMapping("/{meme_id}")
     fun get(
-            @PathVariable("meme_id") markId: Int
+            @PathVariable("meme_id") memeId: Int
     ): GetMemeResponse {
-        return GetMemeResponse(service.getById(markId))
+        return GetMemeResponse(service.getById(memeId))
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], value = ["/{meme_id}"])
     fun update(
-            @PathVariable("meme_id") markId: Int,
+            @PathVariable("meme_id") memeId: Int,
             @Valid @ModelAttribute meme: UpdateMemeRequest
     ) {
-        return service.update(markId, meme.getUpdateModel())
+        return service.update(memeId, meme.getUpdateModel())
     }
 
     @DeleteMapping("/{meme_id}")

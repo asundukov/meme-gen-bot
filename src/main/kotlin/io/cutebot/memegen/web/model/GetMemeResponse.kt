@@ -7,6 +7,5 @@ class GetMemeResponse(meme: ExistedMeme) {
     val botId = meme.botId
     val createdOn = meme.createdOn
     val totalImages = meme.totalImages
-    val title = meme.title
-    val description = meme.description
+    val alias = meme.alias
 }
