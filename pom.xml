@@ -41,6 +41,11 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.cutebot</groupId>
+            <artifactId>kotlin-telegram-bot</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
         </dependency>

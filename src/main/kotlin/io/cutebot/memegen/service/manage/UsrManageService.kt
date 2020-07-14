@@ -3,7 +3,7 @@ package io.cutebot.memegen.service.manage
 import io.cutebot.memegen.domain.usr.UsrRepository
 import io.cutebot.memegen.domain.usr.model.ExistedUsr
 import io.cutebot.memegen.domain.usr.model.UsrEntity
-import io.cutebot.telegram.tgmodel.TgUser
+import io.cutebot.telegram.client.model.TgUser
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.Calendar

@@ -1,10 +1,7 @@
 package io.cutebot.memegen.web
 
 import io.cutebot.memegen.service.ImageGenerator
-import io.cutebot.memegen.service.messagehandlers.inline.InlineHandler
-import io.cutebot.memegen.service.model.ImageSize
-import io.cutebot.memegen.service.model.ImageSize.IMAGE
-import io.cutebot.memegen.service.model.ImageSize.THUMB
+import io.cutebot.memegen.service.bot.InlineHandler
 import io.cutebot.memegen.web.exception.NotFoundWebException
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
