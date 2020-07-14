@@ -1,4 +1,4 @@
-package io.cutebot.telegram.handlers
+package io.cutebot.memegen.domain
 
 data class BaseBot (
         val id: Int,

@@ -1,15 +1,15 @@
-package io.cutebot.memegen.service.messagehandlers.inline
+package io.cutebot.memegen.service.bot
 
+import io.cutebot.memegen.domain.BaseBot
 import io.cutebot.memegen.domain.meme.model.ExistedMeme
 import io.cutebot.memegen.service.manage.MemeManageService
-import io.cutebot.telegram.TelegramService
-import io.cutebot.telegram.handlers.BaseBot
-import io.cutebot.telegram.tgmodel.TgUser
-import io.cutebot.telegram.tgmodel.inline.TgAnswerInlineQuery
-import io.cutebot.telegram.tgmodel.inline.TgInlineQueryResultArticle
-import io.cutebot.telegram.tgmodel.inline.TgInlineQueryResultDocument
-import io.cutebot.telegram.tgmodel.inline.TgInlineQueryResultPhoto
-import io.cutebot.telegram.tgmodel.inline.TgInputMessageContent
+import io.cutebot.telegram.client.TelegramApi
+import io.cutebot.telegram.client.model.TgUser
+import io.cutebot.telegram.client.model.inline.TgAnswerInlineQuery
+import io.cutebot.telegram.client.model.inline.TgInlineQueryResultArticle
+import io.cutebot.telegram.client.model.inline.TgInlineQueryResultDocument
+import io.cutebot.telegram.client.model.inline.TgInlineQueryResultPhoto
+import io.cutebot.telegram.client.model.inline.TgInputMessageContent
 import org.apache.commons.codec.digest.DigestUtils.md5Hex
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -19,14 +19,13 @@ import java.nio.charset.Charset
 @Service
 class InlineHandler(
         private val memeManageService: MemeManageService,
-        private val telegramService: TelegramService,
         @Value("\${meme.image-url}")
         private val imageUrl: String
 ) {
 
-    fun handle(bot: BaseBot, query: String, user: TgUser, queryId: String) {
+    fun handle(botId: Int, query: String, user: TgUser, queryId: String): TgAnswerInlineQuery {
         val (alias, queryText) = parseQuery(query)
-        var memes = memeManageService.findByBotAndAliasLike(bot.id, alias)
+        var memes = memeManageService.findByBotAndAliasLike(botId, alias)
         if (memes.size > 3) {
             memes = memes.subList(0, 3)
         }
@@ -46,8 +45,7 @@ class InlineHandler(
                 memes.forEach { answer.results.add(getInlineQueryResultPhoto(it, queryText)) }
             }
         }
-        telegramService.answerInlineQuery(bot.token, answer)
-        return
+        return answer
     }
 
     private fun parseQuery(query: String): ParsedQuery {

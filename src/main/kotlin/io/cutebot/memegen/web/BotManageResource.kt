@@ -1,11 +1,11 @@
 package io.cutebot.memegen.web
 
-import io.cutebot.memegen.service.manage.BotManageService
 import io.cutebot.memegen.service.LongPollService
+import io.cutebot.memegen.service.TelegramService
+import io.cutebot.memegen.service.manage.BotManageService
 import io.cutebot.memegen.web.model.CreateBotRequest
 import io.cutebot.memegen.web.model.GetBotResponse
 import io.cutebot.memegen.web.model.UpdateBotRequest
-import io.cutebot.telegram.TelegramService
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -24,15 +24,16 @@ import javax.validation.Valid
 class BotManageResource(
         private val service: BotManageService,
         private val longPollService: LongPollService,
-        private val telegramService: TelegramService
+        telegramService: TelegramService
 ) {
+    private val telegramApi = telegramService.api
 
     @PostMapping(consumes = [APPLICATION_JSON_VALUE])
     fun create(
             @Valid @RequestBody bot: CreateBotRequest
     ): GetBotResponse {
         val newBot = bot.getCreateModel()
-        val tgUser = telegramService.getMe(newBot.token)
+        val tgUser = telegramApi.getMe(newBot.token)
         val createdBot = service.save(newBot, tgUser.userName!!)
         longPollService.startLongPoll(createdBot)
         return GetBotResponse(createdBot)
