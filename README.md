@@ -1,5 +1,7 @@
-# meme-gen-bot service
+# meme-gen-bot
 Service can run multiple telegram bots, which place meme-gen-bots .
+
+Based on [Kotlin telegram bot library](https://github.com/asundukov/kotlin-telegram-bot)
 
 ## Running
 As a standart Spring Boot appliactoin
