@@ -146,7 +146,7 @@ class MemeManageService(
     @Transactional(readOnly = true)
     fun findByBotAndAliasLike(botId: Int, alias: String): List<ExistedMeme> {
         val bot = botManageService.getExistedById(botId)
-        return repository.findAllByBotAndAliasLike(bot, "$alias%").map { ExistedMeme(it) }
+        return repository.findAllByBotAndAliasLikeAndActiveIsTrue(bot, "%$alias%").map { ExistedMeme(it) }
     }
 
     @Transactional(readOnly = true)
@@ -169,10 +169,26 @@ class MemeManageService(
     }
 
     @Transactional
-    fun update(markId: Int, updateMeme: UpdateMeme) {
-        val mark = getExistedEntityById(markId)
-        mark.alias = updateMeme.alias
-        repository.save(mark)
+    fun update(markId: Int, updateMeme: UpdateMeme): ExistedMeme {
+        val meme = getExistedEntityById(markId)
+        meme.alias = updateMeme.alias
+        meme.areas.clear()
+        var i = 1;
+        for (textArea in updateMeme.textAreas) {
+            meme.areas.add(MemeTextAreaEntity(
+                    memeTextAreaId = 0,
+                    meme = meme,
+                    leftPos = textArea.left,
+                    rightPos = textArea.right,
+                    topPos = textArea.top,
+                    bottomPos = textArea.bottom,
+                    num = i
+            ))
+            i++
+        }
+
+        repository.save(meme)
+        return ExistedMeme(meme)
     }
 
     internal fun getAllActive(botEntity: BotEntity): List<MemeEntity> {

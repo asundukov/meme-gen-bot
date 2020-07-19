@@ -19,7 +19,7 @@ class MemeTextAreaEntity (
         val memeTextAreaId: Int,
 
         @ManyToOne
-        @JoinColumn(name = "meme_id", updatable = false)
+        @JoinColumn(name = "meme_id")
         val meme: MemeEntity,
 
         val num: Int,

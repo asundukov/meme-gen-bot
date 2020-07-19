@@ -1,11 +1,9 @@
 package io.cutebot.memegen.service.bot
 
-import io.cutebot.memegen.domain.BaseBot
 import io.cutebot.memegen.domain.meme.model.ExistedMeme
 import io.cutebot.memegen.service.manage.MemeManageService
-import io.cutebot.telegram.client.TelegramApi
-import io.cutebot.telegram.client.model.TgUser
 import io.cutebot.telegram.client.model.inline.TgAnswerInlineQuery
+import io.cutebot.telegram.client.model.inline.TgInlineQuery
 import io.cutebot.telegram.client.model.inline.TgInlineQueryResultArticle
 import io.cutebot.telegram.client.model.inline.TgInlineQueryResultDocument
 import io.cutebot.telegram.client.model.inline.TgInlineQueryResultPhoto
@@ -15,37 +13,77 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.net.URLEncoder
 import java.nio.charset.Charset
+import kotlin.math.min
 
 @Service
 class InlineHandler(
         private val memeManageService: MemeManageService,
         @Value("\${meme.image-url}")
-        private val imageUrl: String
+        private val imageUrl: String,
+        @Value("\${bot.inline-result-count}")
+        private val inlineResultItemsCount: Int
 ) {
 
-    fun handle(botId: Int, query: String, user: TgUser, queryId: String): TgAnswerInlineQuery {
-        val (alias, queryText) = parseQuery(query)
+    fun handle(botId: Int, inlineQuery: TgInlineQuery): TgAnswerInlineQuery {
+        val query = inlineQuery.query
+        val queryId = inlineQuery.id
+        val offset = parseOffset(inlineQuery.offset)
+
+        var (alias, queryText) = parseQuery(query)
         var memes = memeManageService.findByBotAndAliasLike(botId, alias)
-        if (memes.size > 3) {
-            memes = memes.subList(0, 3)
+
+        if (memes.isEmpty()) {
+            queryText = inlineQuery.query
+            memes = memeManageService.getAllActive(botId)
         }
 
-        val answer = TgAnswerInlineQuery(queryId)
+        memes = sublistByOffset(memes, offset)
+
+
         if (memes.isEmpty()) {
-            answer.results.add(TgInlineQueryResultArticle(
-                    id = "no_results",
-                    title = "No results",
-                    description = "Selecting this I send hi message to current chat",
-                    inputMessageContent = TgInputMessageContent(messageText = "Hi there. I can help to make some fun memes")
-            ))
+            val answer = TgAnswerInlineQuery(inlineQueryId = queryId)
+            if (offset == 0) {
+                answer.results.add(TgInlineQueryResultArticle(
+                        id = "no_results",
+                        title = "No results",
+                        description = "Selecting this I send hi message to current chat",
+                        inputMessageContent = TgInputMessageContent(messageText = "Hi there. I can help to make some fun memes")
+                ))
+            }
+            return answer
         } else {
+            val answer = TgAnswerInlineQuery(inlineQueryId = queryId, nextOffset = (offset+1).toString())
             if (queryText.isEmpty()) {
                 memes.forEach { answer.results.add(getInlineQueryResultDocument(it)) }
             } else {
                 memes.forEach { answer.results.add(getInlineQueryResultPhoto(it, queryText)) }
             }
+            return answer
         }
-        return answer
+
+    }
+
+    private fun sublistByOffset(memes: List<ExistedMeme>, offset: Int): List<ExistedMeme> {
+        if (memes.isEmpty()) {
+            return memes
+        }
+        val from = inlineResultItemsCount * offset
+        if (from >= memes.size) {
+            return emptyList()
+        }
+        val to = min(from + inlineResultItemsCount, memes.size)
+        return memes.subList(from, to)
+    }
+
+    private fun parseOffset(offset: String): Int {
+        if (offset.isEmpty()) {
+            return 0
+        }
+        return try {
+            offset.toInt()
+        } catch (e: NumberFormatException) {
+            0
+        }
     }
 
     private fun parseQuery(query: String): ParsedQuery {
@@ -53,21 +91,15 @@ class InlineHandler(
         if (q.isEmpty()) {
             return ParsedQuery("", "")
         }
-        if (q[0]!='/') {
+
+        var divider = q.indexOf(" ")
+        if (divider == -1) {
             return ParsedQuery("", query)
         }
 
-        var divider = q.indexOf(" ")
+        val queryText = q.substring(divider + 1, q.length).trim()
 
-        val queryText = if (divider > 0 && divider < q.length) {
-            q.substring(divider + 1, q.length)
-        } else {
-            ""
-        }
-        divider--
-        if (divider < 0) divider = q.length
-
-        val alias = q.substring(1, divider)
+        val alias = q.substring(0, divider).trim()
 
         return ParsedQuery(alias, queryText)
     }
@@ -95,7 +127,7 @@ class InlineHandler(
         val areaCount = meme.areas.size
         val title = "$areaCount total text areas"
         val alias = meme.alias
-        val description = "/$alias text1 | text 2 | text 3 | ..."
+        val description = "$alias text1 | text 2 | text 3 | ..."
         return TgInlineQueryResultDocument(
                 id = md5Hex("doc$resultId"),
                 documentUrl = "$imageUrl/meme/$memeId/image",
