@@ -3,7 +3,9 @@ package io.cutebot.memegen.domain.meme.model
 
 import io.cutebot.memegen.domain.bot.model.BotEntity
 import org.hibernate.annotations.CascadeType
+import org.hibernate.annotations.OrderBy
 import java.util.Calendar
+import javax.persistence.CascadeType.ALL
 import javax.persistence.CascadeType.PERSIST
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,8 +28,9 @@ class MemeEntity (
         @JoinColumn(name = "bot_id", updatable = false)
         val bot: BotEntity,
 
-        @OneToMany(mappedBy = "meme", cascade = [PERSIST])
-        val areas: List<MemeTextAreaEntity>,
+        @OneToMany(mappedBy = "meme", cascade = [ALL], orphanRemoval = true)
+        @OrderBy(clause = "num")
+        val areas: MutableList<MemeTextAreaEntity>,
 
         var totalGenerated: Int,
 
