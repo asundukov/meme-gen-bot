@@ -46,9 +46,9 @@
 <!--            <version>1.0.0-RELEASE</version>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>com.github.asundukov</groupId>
-            <artifactId>kotlin-telegram-bot</artifactId>
-            <version>1.0.0-2</version>
+            <groupId>com.github.asundukov.kotlin-telegram-framework</groupId>
+            <artifactId>kotlin-telegram-framework</artifactId>
+            <version>1.0.1-beta-2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
