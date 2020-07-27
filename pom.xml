@@ -41,14 +41,14 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 <!--        <dependency>-->
-<!--            <groupId>io.cutebot</groupId>-->
-<!--            <artifactId>kotlin-telegram-bot</artifactId>-->
-<!--            <version>1.0.0-RELEASE</version>-->
+<!--            <groupId>io.cutebot.telegram.framework</groupId>-->
+<!--            <artifactId>kotlin-telegram-framework</artifactId>-->
+<!--            <version>1.0.1-RELEASE</version>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>com.github.asundukov.kotlin-telegram-framework</groupId>
             <artifactId>kotlin-telegram-framework</artifactId>
-            <version>1.0.1-beta-2</version>
+            <version>1.0.1-beta-3</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
