@@ -40,5 +40,13 @@ class MemeEntity (
         var alias: String,
 
         @Column(name="is_active")
-        var active: Boolean
+        var active: Boolean,
+
+        val width: Int,
+
+        val height: Int,
+
+        val thumbWidth: Int,
+
+        val thumbHeight: Int
 )

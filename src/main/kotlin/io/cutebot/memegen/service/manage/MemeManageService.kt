@@ -17,10 +17,11 @@ import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_RGB
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.Calendar
+import java.util.UUID
 import javax.imageio.ImageIO
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -49,6 +50,9 @@ class MemeManageService(
         val botEntity = botManageService.getExistedById(botId)
         val textAreas = ArrayList<MemeTextAreaEntity>()
 
+        val tmpFileId = UUID.randomUUID().toString();
+        val sizesData = saveResizedImages(meme, tmpFileId)
+
         val newEntity = MemeEntity(
                 memeId = 0,
                 bot = botEntity,
@@ -56,7 +60,11 @@ class MemeManageService(
                 createdOn = Calendar.getInstance(),
                 alias = meme.alias,
                 active = true,
-                areas = textAreas
+                areas = textAreas,
+                width = sizesData.original.width,
+                height = sizesData.original.height,
+                thumbWidth = sizesData.thumb.width,
+                thumbHeight = sizesData.thumb.height
         )
 
         var i = 1;
@@ -76,27 +84,21 @@ class MemeManageService(
         val existed = saveToBd(newEntity)
 
         try {
-            saveResizedImages(existed, meme.image)
+            moveImages(tmpFileId, existed)
         } catch (e: IOException) {
-            delete(newEntity)
-            throw e
+            delete(newEntity);
+            throw e;
         }
 
         return existed
     }
 
-    fun saveResizedImages(meme: ExistedMeme, imageStream: InputStream) {
-        val id = meme.id
-        val botId = meme.botId
-        val fullDirPath = "$dirPath/$botId"
-        val originalPath = "$fullDirPath/$id.jpg"
-        val thumbPath = "$fullDirPath/${id}_thumb.jpg"
+    fun saveResizedImages(meme: NewMeme, tmpFileId: String): SizesData {
+        val originalPath = getOriginalFullPath(meme.botId, tmpFileId)
+        val thumbPath = getThumbFullPath(meme.botId, tmpFileId)
 
-        val img = ImageIO.read(imageStream)
-        val originalImage =
-        getResizedBufferedImage(img)
-
-        Files.createDirectories(Paths.get(fullDirPath))
+        val img = ImageIO.read(meme.image)
+        val originalImage = getResizedBufferedImage(img)
 
         val file = File(originalPath)
         ImageIO.write(originalImage, "jpeg", file)
@@ -104,7 +106,37 @@ class MemeManageService(
         val thumbFile = File(thumbPath)
         val thumbImg = getThumbBufferedImage(img)
         ImageIO.write(thumbImg, "jpeg", thumbFile)
+        return SizesData(
+                original = SizeData(originalImage.width, originalImage.height),
+                thumb = SizeData(thumbImg.width, thumbImg.height)
+        )
+    }
 
+    fun moveImages(tmpFileId: String, meme: ExistedMeme) {
+        val tmpOriginalPath = getOriginalFullPath(meme.botId, tmpFileId)
+        val tmpThumbPath = getThumbFullPath(meme.botId, tmpFileId)
+
+        val originalPath = getOriginalFullPath(meme.botId, meme.id.toString())
+        val thumbPath = getThumbFullPath(meme.botId, meme.id.toString())
+
+        Files.move(Path.of(tmpOriginalPath), Path.of(originalPath))
+        Files.move(Path.of(tmpThumbPath), Path.of(thumbPath))
+    }
+
+    private fun getOriginalFullPath(botId: Int, fileName: String): String {
+        val botDir = getBotDirPath(botId)
+        return "$botDir/$fileName.jpg"
+    }
+
+    private fun getThumbFullPath(botId: Int, fileName: String): String {
+        val botDir = getBotDirPath(botId)
+        return "$botDir/${fileName}_thumb.jpg"
+    }
+
+    private fun getBotDirPath(botId: Int): String {
+        val botDir = "$dirPath/$botId"
+        Files.createDirectories(Paths.get(botDir))
+        return botDir
     }
 
     private fun getResizedBufferedImage(img: BufferedImage): BufferedImage {
@@ -115,9 +147,6 @@ class MemeManageService(
     }
 
     private fun getThumbBufferedImage(img: BufferedImage): BufferedImage {
-//        val minSide = min(img.width, img.height)
-//        val croppedImg = img.getSubimage(img.width - minSide, img.height - minSide, minSide, minSide)
-//        return scaleToBuffered(croppedImg, thumbSide, thumbSide)
         val ratio = max(img.width.toDouble() / thumbSide, img.height.toDouble() / thumbSide)
         val w = (img.width / ratio).roundToInt()
         val h = (img.height / ratio).roundToInt()
@@ -216,5 +245,15 @@ class MemeManageService(
         repository.save(entity)
     }
 
+
+    data class SizesData (
+            val original: SizeData,
+            val thumb: SizeData
+    )
+
+    data class SizeData (
+            val width: Int,
+            val height: Int
+    )
 
 }
