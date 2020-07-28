@@ -117,7 +117,9 @@ class InlineHandler(
         return TgInlineQueryResultPhoto(
                 id = md5Hex("photo$resultId"),
                 photoUrl = "$imageUrl/meme/$memeId/image?q=$encodedQuery",
-                thumbUrl = "$imageUrl/meme/$memeId/thumb?q=$encodedQuery"
+                thumbUrl = "$imageUrl/meme/$memeId/thumb?q=$encodedQuery",
+                photoWidth = meme.width,
+                photoHeight = meme.height
         )
     }
 
