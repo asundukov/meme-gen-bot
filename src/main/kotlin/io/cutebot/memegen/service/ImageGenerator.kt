@@ -68,7 +68,7 @@ class ImageGenerator(
 
             areaPreparations.forEach { it.ensureMaxFonSize((minSize * 1.15).toInt()) }
 
-            log.info("Original image size {}, {}", original.width, original.height)
+            log.debug("Original image size {}, {}", original.width, original.height)
 
             areaPreparations.forEach { it.getImage() }
 
@@ -76,7 +76,7 @@ class ImageGenerator(
             g.color = BLACK
 
             areaPreparations.forEach {
-                log.info("Draw text at {}, {}", it.left.toInt(), it.top.toInt())
+                log.debug("Draw text at {}, {}", it.left.toInt(), it.top.toInt())
                 g.drawImage(it.getImage(), it.left.toInt(), it.getActualTop(), null)
             }
             g.dispose()
@@ -151,7 +151,7 @@ class ImageGenerator(
             textPane.paint(img.graphics)
             img.graphics.dispose()
 
-            log.info("Draw text {} size {},{}", text, width, imageHeight)
+            log.debug("Draw text {} size {},{}", text, width, imageHeight)
             bufferedImage = img
 
             return img
