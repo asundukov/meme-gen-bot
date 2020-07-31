@@ -1,10 +1,10 @@
 package io.cutebot.memegen.domain.meme.model
 
-import java.math.BigDecimal
+import io.cutebot.memegen.service.model.Color
+import io.cutebot.memegen.service.model.Position
 
 data class MemeTextArea (
-        val top: BigDecimal,
-        val bottom: BigDecimal,
-        val left: BigDecimal,
-        val right: BigDecimal
+        val position: Position,
+        val textColor: Color,
+        val bgColor: Color
 )

@@ -112,13 +112,14 @@ class ImageGenerator(
             private val text: String,
             private val fontName: String
     ) {
-        val textColor = area.textColor
-        val bgColor = area.bgColor
-        val left =  area.left.toFloat() * imageWidth / 100
-        val top = area.top.toFloat() * imageHeight / 100
+        private val textColor = area.textColor.getAwtColor()
+        private val bgColor = area.bgColor.getAwtColor()
 
-        private val right =  area.right.toFloat() * imageWidth / 100
-        private val bottom = area.bottom.toFloat() * imageHeight / 100
+        val left =  area.position.left.toFloat() * imageWidth / 100
+        val top = area.position.top.toFloat() * imageHeight / 100
+
+        private val right =  area.position.right.toFloat() * imageWidth / 100
+        private val bottom = area.position.bottom.toFloat() * imageHeight / 100
 
         private val width = (right - left).toInt()
         private val height = (bottom - top).toInt()

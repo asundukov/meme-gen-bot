@@ -29,13 +29,13 @@ class MemeTextAreaEntity (
         val leftPos: BigDecimal,
         val rightPos: BigDecimal,
 
-        val textColorRed: Int = 0,
-        val textColorGreen: Int = 0,
-        val textColorBlue: Int = 0,
-        val textColorAlpha: Int = 255,
+        val textColorRed: Int,
+        val textColorGreen: Int,
+        val textColorBlue: Int,
+        val textColorAlpha: Int,
 
-        val bgColorRed: Int = 255,
-        val bgColorGreen: Int = 255,
-        val bgColorBlue: Int = 255,
-        val bgColorAlpha: Int = 255
+        val bgColorRed: Int,
+        val bgColorGreen: Int,
+        val bgColorBlue: Int,
+        val bgColorAlpha: Int
 )
