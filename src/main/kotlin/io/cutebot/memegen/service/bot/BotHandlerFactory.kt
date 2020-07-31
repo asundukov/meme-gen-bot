@@ -20,9 +20,9 @@ class BotHandlerFactory(
     fun generateBotHandler(existedBot: ExistedBot): Bot {
 
         val commands = listOf(
-                RedirectCommand(startBlock, "/start", true),
-                RedirectCommand(helpBlock, "help", true),
-                RedirectCommand(aboutBlock, "/about")
+                StartCommand(),
+                RedirectCommand(helpBlock, "/help", true, "Help info"),
+                RedirectCommand(aboutBlock, "/about", true, "About bot and contacts")
         )
 
         return GenMemeBotHandler(
