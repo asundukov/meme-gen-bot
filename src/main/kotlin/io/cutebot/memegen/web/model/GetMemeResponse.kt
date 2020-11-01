@@ -8,5 +8,5 @@ class GetMemeResponse(meme: ExistedMeme) {
     val createdOn = meme.createdOn
     val totalImages = meme.totalImages
     val alias = meme.alias
-    val areas = meme.areas.map { GetTextAreaResponse(it) }
+    val textAreas = meme.areas.map { GetTextAreaResponse(it) }
 }

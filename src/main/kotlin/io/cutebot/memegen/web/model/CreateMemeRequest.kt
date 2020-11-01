@@ -1,5 +1,6 @@
 package io.cutebot.memegen.web.model
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.cutebot.memegen.domain.meme.model.NewMeme
 import org.springframework.web.multipart.MultipartFile
 import javax.validation.constraints.Min
@@ -12,9 +13,9 @@ class CreateMemeRequest(
 
         alias: String,
 
-        textAreaCoords: String
+        textAreas: String
 
-): UpdateMemeRequest(alias, textAreaCoords) {
+): UpdateMemeRequest(alias, mapper.readValue(textAreas, TextAreas::class.java)) {
 
     fun getCreateModel(): NewMeme {
         image ?: error("image didn't located")
@@ -23,8 +24,12 @@ class CreateMemeRequest(
                 botId = botId,
                 image = image?.inputStream!!,
                 alias = alias,
-                textAreas = areaSquares
+                textAreas = textAreas.getModel()
         )
+    }
+
+    companion object {
+        private val mapper = jacksonObjectMapper()
     }
 
 }

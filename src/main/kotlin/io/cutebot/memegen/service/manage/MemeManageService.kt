@@ -48,7 +48,6 @@ class MemeManageService(
     fun add(meme: NewMeme): ExistedMeme {
         val botId = meme.botId
         val botEntity = botManageService.getExistedById(botId)
-        val textAreas = ArrayList<MemeTextAreaEntity>()
 
         val tmpFileId = UUID.randomUUID().toString();
         val sizesData = saveResizedImages(meme, tmpFileId)
@@ -60,26 +59,14 @@ class MemeManageService(
                 createdOn = Calendar.getInstance(),
                 alias = meme.alias,
                 active = true,
-                areas = textAreas,
+                areas = ArrayList(),
                 width = sizesData.original.width,
                 height = sizesData.original.height,
                 thumbWidth = sizesData.thumb.width,
                 thumbHeight = sizesData.thumb.height
         )
 
-        var i = 1;
-        for (textArea in meme.textAreas) {
-            textAreas.add(MemeTextAreaEntity(
-                    memeTextAreaId = 0,
-                    meme = newEntity,
-                    leftPos = textArea.left,
-                    rightPos = textArea.right,
-                    topPos = textArea.top,
-                    bottomPos = textArea.bottom,
-                    num = i
-            ))
-            i++
-        }
+        newEntity.areas.addAll(getTextAreasEntities(meme, newEntity))
 
         val existed = saveToBd(newEntity)
 
@@ -200,24 +187,40 @@ class MemeManageService(
     @Transactional
     fun update(markId: Int, updateMeme: UpdateMeme): ExistedMeme {
         val meme = getExistedEntityById(markId)
+
         meme.alias = updateMeme.alias
+
         meme.areas.clear()
+        meme.areas.addAll(getTextAreasEntities(updateMeme, meme))
+
+        repository.save(meme)
+        return ExistedMeme(meme)
+    }
+
+    private fun getTextAreasEntities(updateMeme: UpdateMeme, meme: MemeEntity): ArrayList<MemeTextAreaEntity> {
         var i = 1;
+        val newAreas = ArrayList<MemeTextAreaEntity>()
         for (textArea in updateMeme.textAreas) {
-            meme.areas.add(MemeTextAreaEntity(
+            newAreas.add(MemeTextAreaEntity(
                     memeTextAreaId = 0,
                     meme = meme,
-                    leftPos = textArea.left,
-                    rightPos = textArea.right,
-                    topPos = textArea.top,
-                    bottomPos = textArea.bottom,
+                    leftPos = textArea.position.left,
+                    rightPos = textArea.position.right,
+                    topPos = textArea.position.top,
+                    bottomPos = textArea.position.bottom,
+                    textColorRed = textArea.textColor.red,
+                    textColorGreen = textArea.textColor.green,
+                    textColorBlue = textArea.textColor.blue,
+                    textColorAlpha = textArea.textColor.alpha,
+                    bgColorRed = textArea.bgColor.red,
+                    bgColorGreen = textArea.bgColor.green,
+                    bgColorBlue = textArea.bgColor.blue,
+                    bgColorAlpha = textArea.bgColor.alpha,
                     num = i
             ))
             i++
         }
-
-        repository.save(meme)
-        return ExistedMeme(meme)
+        return newAreas
     }
 
     internal fun getAllActive(botEntity: BotEntity): List<MemeEntity> {

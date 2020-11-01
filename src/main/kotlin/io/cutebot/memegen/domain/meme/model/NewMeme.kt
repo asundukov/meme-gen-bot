@@ -5,6 +5,6 @@ import java.io.InputStream
 class NewMeme(
         val botId: Int,
         val image: InputStream,
-        val alias: String,
-        val textAreas: List<MemeTextArea>
-)
+        alias: String,
+        textAreas: List<MemeTextArea>
+): UpdateMeme(alias, textAreas)

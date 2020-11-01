@@ -1,13 +1,10 @@
 package io.cutebot.memegen.domain.meme.model
 
-import java.awt.Color
+import io.cutebot.memegen.service.model.Color
+import io.cutebot.memegen.service.model.Position
 
 class ExistedArea(entity: MemeTextAreaEntity) {
-    val top = entity.topPos
-    val bottom = entity.bottomPos
-    val left = entity.leftPos
-    val right = entity.rightPos
-
+    val position = Position(entity.topPos, entity.bottomPos, entity.leftPos, entity.rightPos)
     val textColor = Color(entity.textColorRed, entity.textColorGreen, entity.textColorBlue, entity.textColorAlpha)
     val bgColor = Color(entity.bgColorRed, entity.bgColorGreen, entity.bgColorBlue, entity.bgColorAlpha)
 }
